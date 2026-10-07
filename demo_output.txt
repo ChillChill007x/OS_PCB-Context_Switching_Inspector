@@ -1,0 +1,205 @@
+PCB & Context Switching Inspector
+Parent PID: 432
+Children: 3 | quantum: 1000 ms | units: 8,4,12 | unit: 250 ms | mode: sleep
+User-space Round Robin controller; Linux performs real scheduling.
+Confirmed stop events are NOT kernel context-switch counts.
+
+[P2] created: PID=435 PPID=432
+[P1] created: PID=434 PPID=432
+[P3] created: PID=436 PPID=432
+[Parent] P1 PID=434 initially STOPPED
+--- /proc/434/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	434
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	4
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+[Parent] P2 PID=435 initially STOPPED
+--- /proc/435/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	435
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	3
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+[Parent] P3 PID=436 initially STOPPED
+--- /proc/436/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	436
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	4
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+Inspect from another terminal:
+ps -o pid,ppid,stat,comm -p 434,435,436
+All processes are ready. Starting Round Robin...
+
+[Scheduler] Select P1 (PID=434)
+[Action] SIGCONT -> P1
+[P1 | PID=434] work unit 01/08 completed
+[P1 | PID=434] work unit 02/08 completed
+[P1 | PID=434] work unit 03/08 completed
+[Quantum] expired for P1
+[Action] SIGSTOP -> P1
+[P1 | PID=434] work unit 04/08 completed
+[Stop confirmed] P1, stop event #1 for this child
+--- /proc/434/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	434
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	18
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P2 (PID=435)
+[Action] SIGCONT -> P2
+[P2 | PID=435] work unit 01/04 completed
+[P2 | PID=435] work unit 02/04 completed
+[P2 | PID=435] work unit 03/04 completed
+[Quantum] expired for P2
+[Action] SIGSTOP -> P2
+[Stop confirmed] P2, stop event #1 for this child
+--- /proc/435/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	435
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	14
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P3 (PID=436)
+[Action] SIGCONT -> P3
+[P3 | PID=436] work unit 01/12 completed
+[P3 | PID=436] work unit 02/12 completed
+[P3 | PID=436] work unit 03/12 completed
+[Quantum] expired for P3
+[Action] SIGSTOP -> P3
+[Stop confirmed] P3, stop event #1 for this child
+--- /proc/436/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	436
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	15
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P1 (PID=434)
+[Action] SIGCONT -> P1
+[P1 | PID=434] work unit 05/08 completed
+[P1 | PID=434] work unit 06/08 completed
+[P1 | PID=434] work unit 07/08 completed
+[Quantum] expired for P1
+[Action] SIGSTOP -> P1
+[Stop confirmed] P1, stop event #2 for this child
+--- /proc/434/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	434
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	29
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P2 (PID=435)
+[Action] SIGCONT -> P2
+[P2 | PID=435] work unit 04/04 completed
+[P2] FINISHED
+[Parent] P2 reaped: exit=0, remaining=2
+
+[Scheduler] Select P3 (PID=436)
+[Action] SIGCONT -> P3
+[P3 | PID=436] work unit 04/12 completed
+[P3 | PID=436] work unit 05/12 completed
+[P3 | PID=436] work unit 06/12 completed
+[P3 | PID=436] work unit 07/12 completed
+[Quantum] expired for P3
+[Action] SIGSTOP -> P3
+[Stop confirmed] P3, stop event #2 for this child
+--- /proc/436/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	436
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	28
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P1 (PID=434)
+[Action] SIGCONT -> P1
+[P1 | PID=434] work unit 08/08 completed
+[P1] FINISHED
+[Parent] P1 reaped: exit=0, remaining=1
+
+[Scheduler] Select P3 (PID=436)
+[Action] SIGCONT -> P3
+[P3 | PID=436] work unit 08/12 completed
+[P3 | PID=436] work unit 09/12 completed
+[P3 | PID=436] work unit 10/12 completed
+[P3 | PID=436] work unit 11/12 completed
+[Quantum] expired for P3
+[Action] SIGSTOP -> P3
+[Stop confirmed] P3, stop event #3 for this child
+--- /proc/436/status (kernel snapshot) ---
+Name:	pcb_inspector
+State:	T (stopped)
+Pid:	436
+PPid:	432
+VmRSS:	    1000 kB
+Threads:	1
+voluntary_ctxt_switches:	41
+nonvoluntary_ctxt_switches:	0
+----------------------------------------
+
+[Scheduler] Select P3 (PID=436)
+[Action] SIGCONT -> P3
+[P3 | PID=436] work unit 12/12 completed
+[P3] FINISHED
+[Parent] P3 reaped: exit=0, remaining=0
+
+All child processes finished and reaped.
+Summary:
+P1 PID=434 dispatches=3 confirmed_stops=2
+P2 PID=435 dispatches=2 confirmed_stops=1
+P3 PID=436 dispatches=4 confirmed_stops=3
+Initial stops excluded. Kernel counters in /proc are separate measurements.
+
+Timing summary (ms, CLOCK_MONOTONIC; controller-observed):
+Proc     PID   Units   Target(ms)     Response      Waiting     Turnaround       Active
+P1       434       8     2000.000        0.598     3185.597       5207.656     2022.060
+P2       435       4     1000.000     1048.526     3166.382       4179.343     1012.961
+P3       436      12     3000.000     2057.805     3213.171       6226.617     3013.446
+Average: response=1035.643 ms waiting=3188.383 ms turnaround=5204.539 ms
+Arrival=0 for all children, after the initial ENTER prompt.
+Response=first SIGCONT request - arrival; turnaround=exit observation - arrival.
+Active=sum of CONT-to-confirmed-stop/exit intervals; waiting=turnaround-active.
+Active is wall time, not CPU time; waiting is RR-controller queue time.
+Target=units*unit-ms (CPU target in cpu mode; sleep request total in sleep mode).
+Stop/exit observation includes scheduler and polling delays (nominal poll <=10 ms).
+Initial prompt excluded; --step prompts and inspection overhead ARE included.
+
+Gantt chart (dispatch order; each cell is one dispatch, not to time scale):
+|P1|P2|P3|P1|P2|P3|P1|P3|P3|
