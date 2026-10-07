@@ -1,5 +1,11 @@
 # PCB & Context Switching Inspector — C / Linux
 
+## ผู้จัดทำ
+
+- พัชรพล กองแก้ว 673380415-5 sec4
+- ศุภกิตติ์ ฟันเฟือย 673380427-8 sec4
+- กฤษฎา นามมนต์เทียน 673380388-2 sec4
+
 เดโมฉบับเต็มตามแนวทางใน `PCB_Context_Switching_Inspector_Demo_Guide.pdf`
 สร้าง Parent 1 ตัว และ Child 3 ตัวจริงด้วย `fork()` ให้ Parent เลือก P1 → P2 → P3
 แบบ Round Robin ใช้ `SIGCONT` ให้ทำงาน และ `SIGSTOP` ให้หยุด ก่อนอ่าน `/proc/<PID>/status`
